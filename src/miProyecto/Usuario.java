@@ -11,6 +11,9 @@ public class Usuario {
     public String getId(){
         return id;
     }
+    public boolean validarContraseña(String claveTeclado){
+        return claveTeclado.equals(contraseña); //regresa validacion metodo equals
+    }
     public void restableceContraseña(String contraseña){
         this.contraseña = contraseña;
     }
