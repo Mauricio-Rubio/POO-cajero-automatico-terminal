@@ -1,6 +1,9 @@
 package miProyecto;
 
 import com.sun.corba.se.impl.naming.cosnaming.InterOperableNamingImpl;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
@@ -155,7 +158,9 @@ public class Sistema {
             if (contraseña1.equals(contraseña2) && contraseña1.length() >= 4 && montoApertura >= 50) {
                 System.out.println("Proceso completado");
                 usuario.restableceContraseña(contraseña2);
+                BaseDatos(usuario, usuario.getCuenta(), contraseña2);
                 System.out.println(usuario);
+
                 Bdatos.add(usuario);
 
             } else {
@@ -166,6 +171,43 @@ public class Sistema {
             login();
         }
 
+    }
+
+    public void BaseDatos(Usuario usuario, Cuenta cuenta, String contraseña2) {
+        File archivo; //manipula el archivo
+        FileWriter escribir; // escribir en el archivo
+        PrintWriter linea; // 
+        String nombre;
+        Scanner sc = new Scanner(System.in);
+        archivo = new File("cajeroUsuario.txt");
+        if (!archivo.exists()) {
+            try {
+                archivo.createNewFile();
+                escribir = new FileWriter(archivo, true);
+                linea = new PrintWriter(escribir);
+                //escribir en el archivo
+                linea.println(usuario.getId());
+                linea.println(contraseña2);
+                System.out.println(usuario.getId());
+                System.out.println(contraseña2);
+                //linea.println();
+                linea.close();
+                escribir.close();
+            } catch (Exception e) {
+            }
+        } else {
+            try {
+                escribir = new FileWriter(archivo, true);
+                linea = new PrintWriter(escribir);
+                //escribir en el archivo
+                linea.println(usuario.getId());
+                linea.println(contraseña2);
+                //linea.println(email);
+                linea.close();
+                escribir.close();
+            } catch (Exception e) {
+            }
+        }
     }
 
 }

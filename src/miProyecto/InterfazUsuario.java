@@ -1,6 +1,10 @@
 package miProyecto;
 
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class InterfazUsuario {
 
@@ -47,19 +51,20 @@ public class InterfazUsuario {
         }
 
     }
-    public void pagoServicios(){
+
+    public void pagoServicios() {
         String servicio;
         float monto;
         System.out.println("Servicio a pagar");
         servicio = teclado.nextLine();
         System.out.println("Monto a cobrar");
         monto = teclado.nextFloat();
-        if(monto <= cuenta.consultar()){
+        if (monto <= cuenta.consultar()) {
             cuenta.retirar(monto);
-            System.out.println("Servicio: "+servicio);
-            System.out.println("Importe: "+monto);
-            System.out.println("Saldo restante: "+cuenta.consultar());
-        }else{
+            System.out.println("Servicio: " + servicio);
+            System.out.println("Importe: " + monto);
+            System.out.println("Saldo restante: " + cuenta.consultar());
+        } else {
             System.out.println("Saldo insuficiente");
         }
     }
@@ -68,8 +73,11 @@ public class InterfazUsuario {
         this.usuario = usuario;
         this.cuenta = cuenta;
     }
+
     public void InterfazUsuario() {
-     //   this.usuario = "";
-       // this.cuenta = "";
+        //   this.usuario = "";
+        // this.cuenta = "";
     }
+
+    
 }
