@@ -29,10 +29,19 @@ public class Usuario {
         this.nombre=nombre;
     }
 
-    public Usuario() {
+    public Usuario(String nombre) {
+        this.nombre = nombre;
         this.id= "0";
         this.contraseña="Nan";
-        this.nombre="Nan";
+    }
+    public Usuario(String nombre, String id) {
+        this.nombre = nombre;
+        this.id= id;
+        this.contraseña="Nan";
+    }
+    @Override
+    public String toString(){
+        return nombre+" "+cuenta+" "+id;
     }
     
 }
