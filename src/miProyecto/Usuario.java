@@ -41,7 +41,7 @@ public class Usuario {
     }
     @Override
     public String toString(){
-        return nombre+" "+cuenta+" "+id;
+        return nombre+" "+cuenta+" cuenta id: "+id;
     }
     
 }

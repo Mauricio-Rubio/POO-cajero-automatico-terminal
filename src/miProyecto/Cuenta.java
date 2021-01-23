@@ -20,6 +20,6 @@ public class Cuenta {
     }
     @Override
     public String toString(){
-        return id+" "+fondos;
+        return " fondos: "+fondos+" MXN";
     }
 }

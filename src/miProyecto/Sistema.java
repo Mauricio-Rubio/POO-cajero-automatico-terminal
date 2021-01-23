@@ -140,22 +140,26 @@ public class Sistema {
         System.out.println("Ingresa tu nombre");
         nombre = sc.nextLine();
         if ((!nombre.isEmpty()) && nombre.length() >= 4) {
-            Usuario usuario = new Usuario(nombre, String.valueOf(idAleatorio));
-            usuario.agregarCuenta(new Cuenta("333", 200));
+
             String contraseña1;
             String contraseña2;
             System.out.println("Ingresa nueva contraseña");
             contraseña1 = sc.nextLine();
             System.out.println("Confirma tu contraseña");
             contraseña2 = sc.nextLine();
-            if (contraseña1.equals(contraseña2) && contraseña1.length() >= 4) {
+            System.out.println("Deposita a tu nueva cuenta. Depósito mínimo de 50.00 MXN");
+            Usuario usuario = new Usuario(nombre, String.valueOf(idAleatorio));
+            float montoApertura = sc.nextInt();
+            usuario.agregarCuenta(new Cuenta("333", montoApertura));
+            System.out.println(montoApertura);
+            if (contraseña1.equals(contraseña2) && contraseña1.length() >= 4 && montoApertura >= 50) {
                 System.out.println("Proceso completado");
                 usuario.restableceContraseña(contraseña2);
                 System.out.println(usuario);
                 Bdatos.add(usuario);
 
             } else {
-                System.out.println("Error al ingresar contraseña");
+                System.out.println("Error revisa contraseña y deposito");
             }
         } else {
             System.out.println("Error al ingresar usuario");
