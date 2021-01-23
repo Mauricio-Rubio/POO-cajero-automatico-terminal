@@ -186,8 +186,9 @@ public class Sistema {
                 escribir = new FileWriter(archivo, true);
                 linea = new PrintWriter(escribir);
                 //escribir en el archivo
-                linea.println(usuario.getId());
-                linea.println(contraseña2);
+                linea.println("id: "+usuario.getId());
+                linea.println("C: "+contraseña2);
+                linea.println("fondos"+usuario.getCuenta().consultar());
                 System.out.println(usuario.getId());
                 System.out.println(contraseña2);
                 //linea.println();
@@ -200,8 +201,9 @@ public class Sistema {
                 escribir = new FileWriter(archivo, true);
                 linea = new PrintWriter(escribir);
                 //escribir en el archivo
-                linea.println(usuario.getId());
-                linea.println(contraseña2);
+                linea.println("id: "+usuario.getId());
+                linea.println("C: "+contraseña2);
+                linea.println("fondos"+usuario.getCuenta().consultar());
                 //linea.println(email);
                 linea.close();
                 escribir.close();
