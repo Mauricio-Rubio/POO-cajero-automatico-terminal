@@ -18,18 +18,18 @@ import java.util.logging.Logger;
 
 public class Sistema {
 
-    Scanner teclado;
+    Scanner teclado = new Scanner(System.in);
     private Usuario usuarioActivo;
 
     public Sistema() {
 
         ImprimirNombre();
-        teclado = new Scanner(System.in);
-        login();
     }
 
     public void ImprimirNombre() {
         System.out.println("BANCO NACIONAL BANANA REPUBLIC");
+        login();
+
     }
 
     public void login() {
@@ -44,7 +44,7 @@ public class Sistema {
                 if (usuarioLogin != null) {
                     System.out.println("Bienvenido " + usuarioLogin.getNombre());
                     opcionesCuenta(usuarioLogin);
-                    //break;
+                    break;
                 } else {
                     System.out.println("Error en login, revisa tus datos");
                 }
@@ -54,8 +54,8 @@ public class Sistema {
         if (eleccion == 2) {
             crearUsuario();
             login();
-        }else{
-            System.out.println("Adios3");;
+        } else {
+            ImprimirNombre();
         }
     }
 
@@ -94,6 +94,7 @@ public class Sistema {
             leer = new FileReader(archivo);
             almacenamiento = new BufferedReader(leer);
             cadena = "";
+            usuarioActivo=null;
             do {
                 try {
                     cadena = almacenamiento.readLine();
@@ -185,7 +186,8 @@ public class Sistema {
                 opcionesCuenta(usuarioLogin);
                 break;
             case 6:
-                return operacionUsuario;
+                System.out.println("Adios");
+                break;
         }
         return operacionUsuario;
     }

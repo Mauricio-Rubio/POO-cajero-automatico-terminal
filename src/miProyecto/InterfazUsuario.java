@@ -38,7 +38,7 @@ public class InterfazUsuario {
         float monto;
         System.out.println("Ingresa el monto a retirar");
         monto = teclado.nextFloat();
-        if (monto >= 50 && monto < cuenta.consultar()) {
+        if (monto >= 50 && monto <= cuenta.consultar()) {
 
             cuenta.retirar(monto);
             System.out.println("Se retiró: " + monto + "MXN saldo restante: " + cuenta.consultar() + "MXN");
