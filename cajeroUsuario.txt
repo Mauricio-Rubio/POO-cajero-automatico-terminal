@@ -1,6 +1,5 @@
-302
-Mauricio
-MR502
+1070
+Mauricio Rubio Haro
+1234
 333
-500.0
-
+1000.0

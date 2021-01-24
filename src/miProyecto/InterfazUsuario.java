@@ -34,22 +34,19 @@ public class InterfazUsuario {
         }
     }
 
-    public void reitro() {
+    public boolean reitro() {
         float monto;
         System.out.println("Ingresa el monto a retirar");
         monto = teclado.nextFloat();
-        if (monto >= 50) {
-            if (monto <= cuenta.consultar()) {
-                cuenta.retirar(monto);
-                System.out.println("Se retiró: " + monto + "MXN saldo restante: " + cuenta.consultar() + "MXN");
-            } else {
-                System.out.println("No puedes retirar esa cantidad");
-            }
+        if (monto >= 50 && monto < cuenta.consultar()) {
+
+            cuenta.retirar(monto);
+            System.out.println("Se retiró: " + monto + "MXN saldo restante: " + cuenta.consultar() + "MXN");
+            return true;
         } else {
             System.out.println("Retiro minimo: 50.00 MXN");
-
+            return false;
         }
-
     }
 
     public void pagoServicios() {

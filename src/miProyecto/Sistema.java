@@ -1,6 +1,5 @@
 package miProyecto;
 
-import com.sun.corba.se.impl.naming.cosnaming.InterOperableNamingImpl;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,7 +11,6 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.logging.Level;
@@ -25,12 +23,12 @@ public class Sistema {
 
     public Sistema() {
 
-        /*ImprimirMenu();
+        ImprimirNombre();
         teclado = new Scanner(System.in);
-        login();*/
+        login();
     }
 
-    public void ImprimirMenu() {
+    public void ImprimirNombre() {
         System.out.println("BANCO NACIONAL BANANA REPUBLIC");
     }
 
@@ -46,7 +44,7 @@ public class Sistema {
                 if (usuarioLogin != null) {
                     System.out.println("Bienvenido " + usuarioLogin.getNombre());
                     opcionesCuenta(usuarioLogin);
-                    break;
+                    //break;
                 } else {
                     System.out.println("Error en login, revisa tus datos");
                 }
@@ -56,6 +54,8 @@ public class Sistema {
         if (eleccion == 2) {
             crearUsuario();
             login();
+        }else{
+            System.out.println("Adios3");;
         }
     }
 
@@ -85,7 +85,6 @@ public class Sistema {
     }*/ //Se convierte en un bucle infinito
     public boolean buscarUser(String idUser, String contraseñaUser) {
 
-        System.out.println("entramos en buscar: " + idUser + contraseñaUser);
         File archivo;  //manipular un archivo
         FileReader leer; //lector
         String cadena, idUsuario = "", contraseña = "", usuario = "", idCuenta = "", fondos = "";
@@ -98,12 +97,9 @@ public class Sistema {
             do {
                 try {
                     cadena = almacenamiento.readLine();
-                    usuario = cadena;
-                    // if(){
-
-                    //}
-                    cadena = almacenamiento.readLine();
                     idUsuario = cadena;
+                    cadena = almacenamiento.readLine();
+                    usuario = cadena;
                     cadena = almacenamiento.readLine();
                     contraseña = cadena;
                     cadena = almacenamiento.readLine();
@@ -111,12 +107,11 @@ public class Sistema {
                     cadena = almacenamiento.readLine();
                     fondos = cadena;
                     if (cadena != null && contraseña.equals(contraseñaUser) && idUser.equals(idUsuario)) {
-                        System.out.println("Usuario: " + usuario + "\nid: " + idUsuario + " \ncontraseña: " + contraseña);
                         Usuario userBusqueda = new Usuario(usuario, contraseña, idUsuario);
                         float fondosCuenta = Float.valueOf(fondos);
                         userBusqueda.agregarCuenta(new Cuenta(idCuenta, fondosCuenta));
                         usuarioActivo = userBusqueda;
-                        System.out.println("Buscar user sí sirve" + userBusqueda);
+                        leer.close();
                         return true;
                     } else {
                         System.out.println("Contraseña no encontrada" + "Usuario: " + usuario + "\nid: " + idUsuario + " \ncontraseña: " + contraseña);
@@ -157,7 +152,6 @@ public class Sistema {
         System.out.println("Ingresa tu contraseña");
         contraseñaUser = sc.nextLine();
         if (buscarUser(idUser, contraseñaUser)) {
-            System.out.println("Login correcto");
             return usuarioActivo;
         }
         return null;
@@ -171,7 +165,11 @@ public class Sistema {
         InterfazUsuario interfaz = new InterfazUsuario(usuarioLogin, usuarioLogin.getCuenta());
         switch (operacionUsuario) {
             case 1:
-                interfaz.reitro();
+
+                if (interfaz.reitro()) {
+                    System.out.println(usuarioLogin);
+                    actualizarUsuario(usuarioLogin);
+                }
                 opcionesCuenta(usuarioLogin);
                 break;
             case 2:
@@ -205,29 +203,33 @@ public class Sistema {
                 String borrarEspacios = cadena.trim();
                 if (borrarEspacios.equals(user.getId())) {
                     escribir.write(user.getId() + System.getProperty("line.separator"));
-                    escribir.write(user.getNombre()+System.getProperty("line.separator"));
+                    escribir.write(user.getNombre() + System.getProperty("line.separator"));
                     escribir.write(user.getContraseña() + System.getProperty("line.separator"));
-                    escribir.write(user.getCuenta().getId()+ System.getProperty("line.separator"));
+                    escribir.write(user.getCuenta().getId() + System.getProperty("line.separator"));
                     escribir.write(user.getCuenta().consultar() + System.getProperty("line.separator"));
                     for (int i = 0; i < 4; i++) {
-                    cadena=lectura.readLine();
+                        cadena = lectura.readLine();
                     }
-                     continue; //sale de la iteracion. No ejecuta nada continuo
+                    continue; //sale de la iteracion. No ejecuta nada continuo
                 }
                 escribir.write(cadena + System.getProperty("line.separator"));
             }
 
             lectura.close();
             escribir.close();
+
             System.out.println("Buffer cerrado");
-            
-            if(archivoLectura.exists()){
+
+            if (archivoLectura.exists()) {
                 //Boolean resultados = archivoTemporal.renameTo(new File());
+                System.out.println("El archivo si existe");
+
                 Files.move(Paths.get(archivoTemporal.getAbsolutePath()), Paths.get(archivoLectura.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+                //Files.move(archivoTemporal.toPath(), archivoLectura.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("ok");
-            }else{
+            } else {
                 System.out.println("No archivo lectura");
-            } 
+            }
 
         } catch (IOException x) {
             System.out.println("Error: " + x);
@@ -286,8 +288,8 @@ public class Sistema {
                 escribir = new FileWriter(archivo, true);
                 linea = new PrintWriter(escribir);
                 //escribir en el archivo
-                linea.println(usuario.getNombre());
                 linea.println(usuario.getId());
+                linea.println(usuario.getNombre());
                 linea.println(contraseña2);
                 linea.println(usuario.getCuenta().getId());
                 linea.println(usuario.getCuenta().consultar());
@@ -303,8 +305,8 @@ public class Sistema {
                 escribir = new FileWriter(archivo, true);
                 linea = new PrintWriter(escribir);
                 //escribir en el archivo
-                linea.println(usuario.getNombre());
                 linea.println(usuario.getId());
+                linea.println(usuario.getNombre());
                 linea.println(contraseña2);
                 linea.println(usuario.getCuenta().getId());
                 linea.println(usuario.getCuenta().consultar());
