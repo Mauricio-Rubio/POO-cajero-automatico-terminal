@@ -167,14 +167,15 @@ public class Sistema {
         switch (operacionUsuario) {
             case 1:
 
-                if (interfaz.reitro()) {
-                    System.out.println(usuarioLogin);
+                if (interfaz.retiro()) {
                     actualizarUsuario(usuarioLogin);
                 }
                 opcionesCuenta(usuarioLogin);
                 break;
             case 2:
-                interfaz.abono();
+                if(interfaz.abono()>=50){
+                    actualizarUsuario(usuarioLogin);
+                }
                 opcionesCuenta(usuarioLogin);
                 break;
             case 3:
@@ -182,7 +183,16 @@ public class Sistema {
                 opcionesCuenta(usuarioLogin);
                 break;
             case 4:
-                interfaz.pagoServicios();
+                if(interfaz.pagoServicios()){
+                    actualizarUsuario(usuarioLogin);
+                }
+                opcionesCuenta(usuarioLogin);
+                break;
+            case 5:
+                
+                if(interfaz.tiempoAire()){
+                    actualizarUsuario(usuarioLogin);
+                }
                 opcionesCuenta(usuarioLogin);
                 break;
             case 6:
