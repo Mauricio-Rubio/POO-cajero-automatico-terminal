@@ -17,27 +17,12 @@ import java.util.logging.Logger;
 public class Sistema {
 
     Scanner teclado;
-    private ArrayList<Usuario> usuarioActivo;
+    private Usuario usuarioActivo;
 
     public Sistema() {
 
         ImprimirMenu();
-        Usuario user = new Usuario("Mauricio", "q1", "321");
-        Usuario PUERKI = new Usuario("PUERKI", "Q2", "322");
-        Cuenta cuenticPUERKI = new Cuenta("31256", 100);
-        Cuenta cuentica = new Cuenta("654321", 100);
-        user.agregarCuenta(cuentica);
-        PUERKI.agregarCuenta(cuenticPUERKI);
-        usuarioActivo = new ArrayList();
-        usuarioActivo.add(user);
-        usuarioActivo.add(PUERKI);
         teclado = new Scanner(System.in);
-        /*for (int i = 0; i < 1; i++) {
-            System.out.println(Bdatos.get(i).getId());
-        }
-        System.out.println(Bdatos); si imprimimos un arreglo que contenga objetos 
-        en la posicion [n], el resultado será el espacio en memoria que este ocupa, por eso ocupamos metodos
-         */
         login();
     }
 
@@ -68,15 +53,6 @@ public class Sistema {
             crearUsuario();
             login();
         }
-
-        //userLogin no necesita un constructor
-        /*if(usuarioLogin != null){
-                System.out.println("Si existe");
-                ImprimirMenu(usuarioLogin);
-            }else{
-                System.out.println("No existes");
-            }*/ //teclado.hasNextLine();
-        //System.out.println("Ingresa tu contraseña");
     }
 
     /*public void validar(Usuario usuarioLogin) {
@@ -135,7 +111,7 @@ public class Sistema {
                         Usuario userBusqueda = new Usuario(usuario, contraseña, idUsuario);
                         float fondosCuenta = Float.valueOf(fondos);
                         userBusqueda.agregarCuenta(new Cuenta(idCuenta, fondosCuenta));
-                        usuarioActivo.add(userBusqueda);
+                        usuarioActivo=userBusqueda;
                         System.out.println("Buscar user sí sirve" + userBusqueda);
                         return true;
                     }else{
@@ -178,37 +154,10 @@ public class Sistema {
         contraseñaUser = sc.nextLine();
         if (buscarUser(idUser, contraseñaUser)) {
             System.out.println("Login correcto");
-            Usuario userBaseDatos;
-            for (int i = 0; i < usuarioActivo.size(); i++) {
-                userBaseDatos = usuarioActivo.get(i);
-                if (userBaseDatos.getId().equals(idUser)) {
-                    System.out.println("Usuario encontrado");
-                    if (userBaseDatos.validarContraseña(contraseñaUser)) {
-                        System.out.println("Contraseña aceptada");
-                        return userBaseDatos;
-                    }
-                }
-            }
-
+           return usuarioActivo;
         }
         return null;
     }
-
-    /*public Usuario buscarUser(String id, String contraseña) {
-        //Trae un usuario de la BDD, lo busca con el Id y lo regresa a quien lo llame
-        Usuario userBaseDatos;
-        for (int i = 0; i < Bdatos.size(); i++) {
-            userBaseDatos = Bdatos.get(i);
-            if (userBaseDatos.getId().equals(id)) {
-                System.out.println("Usuario encontrado");
-                if (userBaseDatos.validarContraseña(contraseña)) {
-                    System.out.println("Contraseña aceptada");
-                    return userBaseDatos;
-                }
-            }
-        }
-        return null;
-    }*/
     public int opcionesCuenta(Usuario usuarioLogin) {
         int operacionUsuario;
         System.out.println("Operaciones disponibles");
@@ -237,7 +186,12 @@ public class Sistema {
         }
         return operacionUsuario;
     }
-
+    private Usuario actualizarUsuario(Usuario user){
+        
+        
+        
+        return null;
+    }
     public void crearUsuario() {
         Scanner sc = new Scanner(System.in);
         String nombre;
@@ -264,7 +218,7 @@ public class Sistema {
                 usuario.restableceContraseña(contraseña2);
                 BaseDatos(usuario, contraseña2);
                 //System.out.println(usuario);
-                usuarioActivo.add(usuario);
+                usuarioActivo=usuario;
                 System.out.println("Tu id es: " + usuario.getId());
 
             } else {
