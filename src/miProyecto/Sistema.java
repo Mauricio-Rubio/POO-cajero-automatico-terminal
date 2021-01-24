@@ -2,12 +2,16 @@ package miProyecto;
 
 import com.sun.corba.se.impl.naming.cosnaming.InterOperableNamingImpl;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
@@ -21,9 +25,9 @@ public class Sistema {
 
     public Sistema() {
 
-        ImprimirMenu();
+        /*ImprimirMenu();
         teclado = new Scanner(System.in);
-        login();
+        login();*/
     }
 
     public void ImprimirMenu() {
@@ -80,8 +84,8 @@ public class Sistema {
         }
     }*/ //Se convierte en un bucle infinito
     public boolean buscarUser(String idUser, String contraseñaUser) {
-        
-        System.out.println("entramos en buscar: "+idUser+contraseñaUser);
+
+        System.out.println("entramos en buscar: " + idUser + contraseñaUser);
         File archivo;  //manipular un archivo
         FileReader leer; //lector
         String cadena, idUsuario = "", contraseña = "", usuario = "", idCuenta = "", fondos = "";
@@ -95,8 +99,8 @@ public class Sistema {
                 try {
                     cadena = almacenamiento.readLine();
                     usuario = cadena;
-                   // if(){
-                        
+                    // if(){
+
                     //}
                     cadena = almacenamiento.readLine();
                     idUsuario = cadena;
@@ -111,11 +115,11 @@ public class Sistema {
                         Usuario userBusqueda = new Usuario(usuario, contraseña, idUsuario);
                         float fondosCuenta = Float.valueOf(fondos);
                         userBusqueda.agregarCuenta(new Cuenta(idCuenta, fondosCuenta));
-                        usuarioActivo=userBusqueda;
+                        usuarioActivo = userBusqueda;
                         System.out.println("Buscar user sí sirve" + userBusqueda);
                         return true;
-                    }else{
-                        System.out.println("Contraseña no encontrada"+"Usuario: " + usuario + "\nid: " + idUsuario + " \ncontraseña: " + contraseña);
+                    } else {
+                        System.out.println("Contraseña no encontrada" + "Usuario: " + usuario + "\nid: " + idUsuario + " \ncontraseña: " + contraseña);
                     }
                 } catch (IOException ex) {
                     System.out.println("error encontrar" + ex);
@@ -154,10 +158,11 @@ public class Sistema {
         contraseñaUser = sc.nextLine();
         if (buscarUser(idUser, contraseñaUser)) {
             System.out.println("Login correcto");
-           return usuarioActivo;
+            return usuarioActivo;
         }
         return null;
     }
+
     public int opcionesCuenta(Usuario usuarioLogin) {
         int operacionUsuario;
         System.out.println("Operaciones disponibles");
@@ -186,12 +191,51 @@ public class Sistema {
         }
         return operacionUsuario;
     }
-    private Usuario actualizarUsuario(Usuario user){
-        
-        
-        
+
+    public Usuario actualizarUsuario(Usuario user) {
+        File archivoTemporal;
+        archivoTemporal = new File("temp.txt");
+        File archivoLectura;
+        archivoLectura = new File("cajeroUsuario.txt");
+        try {
+            BufferedWriter escribir = new BufferedWriter(new FileWriter(archivoTemporal));
+            BufferedReader lectura = new BufferedReader(new FileReader(archivoLectura));
+            String cadena;
+            while ((cadena = lectura.readLine()) != null) { //comparamos cadena, que alberga lectura de linea, con null
+                String borrarEspacios = cadena.trim();
+                if (borrarEspacios.equals(user.getId())) {
+                    escribir.write(user.getId() + System.getProperty("line.separator"));
+                    escribir.write(user.getNombre()+System.getProperty("line.separator"));
+                    escribir.write(user.getContraseña() + System.getProperty("line.separator"));
+                    escribir.write(user.getCuenta().getId()+ System.getProperty("line.separator"));
+                    escribir.write(user.getCuenta().consultar() + System.getProperty("line.separator"));
+                    for (int i = 0; i < 4; i++) {
+                    cadena=lectura.readLine();
+                    }
+                     continue; //sale de la iteracion. No ejecuta nada continuo
+                }
+                escribir.write(cadena + System.getProperty("line.separator"));
+            }
+
+            lectura.close();
+            escribir.close();
+            System.out.println("Buffer cerrado");
+            
+            if(archivoLectura.exists()){
+                //Boolean resultados = archivoTemporal.renameTo(new File());
+                Files.move(Paths.get(archivoTemporal.getAbsolutePath()), Paths.get(archivoLectura.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("ok");
+            }else{
+                System.out.println("No archivo lectura");
+            } 
+
+        } catch (IOException x) {
+            System.out.println("Error: " + x);
+        }
+
         return null;
     }
+
     public void crearUsuario() {
         Scanner sc = new Scanner(System.in);
         String nombre;
@@ -218,7 +262,7 @@ public class Sistema {
                 usuario.restableceContraseña(contraseña2);
                 BaseDatos(usuario, contraseña2);
                 //System.out.println(usuario);
-                usuarioActivo=usuario;
+                usuarioActivo = usuario;
                 System.out.println("Tu id es: " + usuario.getId());
 
             } else {
