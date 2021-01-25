@@ -84,7 +84,8 @@ public class Sistema {
         }
     }*/ //Se convierte en un bucle infinito
     public boolean buscarUser(String idUser, String contraseñaUser) {
-
+        Cifrador cifrado = new Cifrador();
+        String contraseñaCifrada = cifrado.cifrar(contraseñaUser);
         File archivo;  //manipular un archivo
         FileReader leer; //lector
         String cadena, idUsuario = "", contraseña = "", usuario = "", idCuenta = "", fondos = "";
@@ -107,7 +108,7 @@ public class Sistema {
                     idCuenta = cadena;
                     cadena = almacenamiento.readLine();
                     fondos = cadena;
-                    if (cadena != null && contraseña.equals(contraseñaUser) && idUser.equals(idUsuario)) {
+                    if (cadena != null && contraseña.equals(contraseñaCifrada) && idUser.equals(idUsuario)) {
                         Usuario userBusqueda = new Usuario(usuario, contraseña, idUsuario);
                         float fondosCuenta = Float.valueOf(fondos);
                         userBusqueda.agregarCuenta(new Cuenta(idCuenta, fondosCuenta));
@@ -122,7 +123,7 @@ public class Sistema {
 
                     Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } while (cadena != null || (idUser.equals(usuario) && contraseña.equals(contraseñaUser)));
+            } while (cadena != null || (idUser.equals(usuario) && contraseña.equals(contraseñaCifrada)));
             try {
                 almacenamiento.close();
                 leer.close();
@@ -196,7 +197,7 @@ public class Sistema {
                 opcionesCuenta(usuarioLogin);
                 break;
             case 6:
-                if(cambiarContraseña(usuarioLogin)){
+                if (cambiarContraseña(usuarioLogin)) {
                     System.out.println("Operacion exitosa");
                 }
                 opcionesCuenta(usuarioLogin);
@@ -222,6 +223,7 @@ public class Sistema {
                 if (borrarEspacios.equals(user.getId())) {
                     escribir.write(user.getId() + System.getProperty("line.separator"));
                     escribir.write(user.getNombre() + System.getProperty("line.separator"));
+
                     escribir.write(user.getContraseña() + System.getProperty("line.separator"));
                     escribir.write(user.getCuenta().getId() + System.getProperty("line.separator"));
                     escribir.write(user.getCuenta().consultar() + System.getProperty("line.separator"));
@@ -275,9 +277,9 @@ public class Sistema {
             }
         } else {
             System.out.println("Error, revisa tus datos");
-           
+
         }
-         return false;
+        return false;
     }
 
     public void crearUsuario() {
@@ -301,10 +303,12 @@ public class Sistema {
             System.out.println(montoApertura);
             if (contraseña1.equals(contraseña2) && contraseña1.length() >= 4 && montoApertura >= 50) {
                 System.out.println("Proceso completado");
+                Cifrador cifrado = new Cifrador();
+                String contraseñaCifrada = cifrado.cifrar(contraseña2);
                 Usuario usuario = new Usuario(nombre, String.valueOf(idAleatorio));
                 usuario.agregarCuenta(new Cuenta("333", montoApertura));
-                usuario.restableceContraseña(contraseña2);
-                BaseDatos(usuario, contraseña2);
+                usuario.restableceContraseña(contraseñaCifrada);
+                BaseDatos(usuario);
                 //System.out.println(usuario);
                 usuarioActivo = usuario;
                 System.out.println("Tu id es: " + usuario.getId());
@@ -319,7 +323,7 @@ public class Sistema {
 
     }
 
-    public void BaseDatos(Usuario usuario, String contraseña2) {
+    public void BaseDatos(Usuario usuario) {
         File archivo; //manipula el archivo
         FileWriter escribir; // escribir en el archivo
         PrintWriter linea; // 
@@ -332,7 +336,7 @@ public class Sistema {
                 //escribir en el archivo
                 linea.println(usuario.getId());
                 linea.println(usuario.getNombre());
-                linea.println(contraseña2);
+                linea.println(usuario.getContraseña());//Esta cifrada al acceder al método getContraseña
                 linea.println(usuario.getCuenta().getId());
                 linea.println(usuario.getCuenta().consultar());
                 //System.out.println(usuario.getId());
@@ -349,7 +353,7 @@ public class Sistema {
                 //escribir en el archivo
                 linea.println(usuario.getId());
                 linea.println(usuario.getNombre());
-                linea.println(contraseña2);
+                linea.println(usuario.getContraseña());
                 linea.println(usuario.getCuenta().getId());
                 linea.println(usuario.getCuenta().consultar());
                 //linea.println(email);
