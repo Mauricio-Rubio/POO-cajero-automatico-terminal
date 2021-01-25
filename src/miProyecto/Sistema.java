@@ -94,7 +94,7 @@ public class Sistema {
             leer = new FileReader(archivo);
             almacenamiento = new BufferedReader(leer);
             cadena = "";
-            usuarioActivo=null;
+            usuarioActivo = null;
             do {
                 try {
                     cadena = almacenamiento.readLine();
@@ -161,7 +161,7 @@ public class Sistema {
     public int opcionesCuenta(Usuario usuarioLogin) {
         int operacionUsuario;
         System.out.println("Operaciones disponibles");
-        System.out.println("1 retiro, 2 deposito, 3 consulta de saldo, 4 pago de servicios, 5 compra aire, 6 salir ");
+        System.out.println("1 retiro, 2 deposito, 3 consulta de saldo, 4 pago de servicios, 5 compra aire, 6 cambiar contraseña, 7 salir ");
         operacionUsuario = teclado.nextInt();
         InterfazUsuario interfaz = new InterfazUsuario(usuarioLogin, usuarioLogin.getCuenta());
         switch (operacionUsuario) {
@@ -173,7 +173,7 @@ public class Sistema {
                 opcionesCuenta(usuarioLogin);
                 break;
             case 2:
-                if(interfaz.abono()>=50){
+                if (interfaz.abono() >= 50) {
                     actualizarUsuario(usuarioLogin);
                 }
                 opcionesCuenta(usuarioLogin);
@@ -183,19 +183,25 @@ public class Sistema {
                 opcionesCuenta(usuarioLogin);
                 break;
             case 4:
-                if(interfaz.pagoServicios()){
+                if (interfaz.pagoServicios()) {
                     actualizarUsuario(usuarioLogin);
                 }
                 opcionesCuenta(usuarioLogin);
                 break;
             case 5:
-                
-                if(interfaz.tiempoAire()){
+
+                if (interfaz.tiempoAire()) {
                     actualizarUsuario(usuarioLogin);
                 }
                 opcionesCuenta(usuarioLogin);
                 break;
             case 6:
+                if(cambiarContraseña(usuarioLogin)){
+                    System.out.println("Operacion exitosa");
+                }
+                opcionesCuenta(usuarioLogin);
+                break;
+            case 7:
                 System.out.println("Adios");
                 break;
         }
@@ -248,6 +254,30 @@ public class Sistema {
         }
 
         return null;
+    }
+
+    private boolean cambiarContraseña(Usuario usuario) {
+        String contraseña1, contraseña2, contraseñaNueva1, contraseñaNueva2;
+        Scanner teclado = new Scanner(System.in);
+        System.out.println("Ingresa tu contraseña");
+        contraseña1 = teclado.nextLine();
+        System.out.println("Confirma tu contreseña");
+        contraseña2 = teclado.nextLine();
+        if (buscarUser(usuario.getId(), contraseña1)) {
+            System.out.println("Ingresa tu nueva contraseña (minimo 4 digitos)");
+            contraseñaNueva1 = teclado.nextLine();
+            System.out.println("Confirma tu nueva contraseña");
+            contraseñaNueva2 = teclado.nextLine();
+            if (contraseñaNueva1.equals(contraseñaNueva2) && contraseñaNueva1.length() >= 4) {
+                usuario.restableceContraseña(contraseñaNueva1);
+                actualizarUsuario(usuario);
+                return true;
+            }
+        } else {
+            System.out.println("Error, revisa tus datos");
+           
+        }
+         return false;
     }
 
     public void crearUsuario() {
