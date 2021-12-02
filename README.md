@@ -5,3 +5,4 @@ Cuenta con un sistema de registro el cual permite ser usado por cualquier person
 en un archivo .txt el cuál funciona como una base de datos (al cerrar el programa y volver a ejecutar puede hacer login), este mismo archivo servirá para guardar
 los datos financieros de cada cuenta.
 Las contraseñas almacenadas en el .txt cuentan con un cifrado AES.
+Es posible hacer operaciones básicas como retiros, depósitos y pago de servicios
